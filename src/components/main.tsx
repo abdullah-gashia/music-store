@@ -99,7 +99,7 @@ export default function Main() {
   const [isNew, setIsNew] = useState(false);
   const [editId, setEditId] = useState(-1);
 
-  const handleLike = (index: number) => {
+  const handleLike = (index) => {
     const newLikes = [...gameLikes];
     newLikes[index].likes += 1;
     setGameLikes(newLikes);
@@ -137,7 +137,7 @@ export default function Main() {
     setIsNew(false);
   }
 
-  function editInstrument(id: number) {
+  function editInstrument(id) {
     const index = gameLikes.findIndex((instrument) => instrument.id === id);
     if (index !== -1) {
       setEditId(index);
@@ -147,6 +147,10 @@ export default function Main() {
       setImageUrl(gameLikes[index].image_url);
       setIsNew(gameLikes[index].is_new);
     }
+  }
+
+  function deleteInstrument(id) {
+    setGameLikes(gameLikes.filter((instrument) => instrument.id !== id));
   }
 
   return (
@@ -181,6 +185,7 @@ export default function Main() {
                 <span>{instrument.likes} Likes</span>
               </div>
               <button onClick={() => editInstrument(instrument.id)} className="edit-button border-2 m-2 p-1">Edit</button>
+              <button onClick={() => deleteInstrument(instrument.id)} className="delete-button border-2 m-2 p-1">Delete</button>
             </div>
           </div>
         ))}
@@ -189,43 +194,43 @@ export default function Main() {
       <br />
       
       <div className="add">
-      <div className="add-instrument">
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border-2 border-blue-700 p-2 m-1 text-xl rounded-md text-center"
-        />
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          className="border-2 border-blue-700 p-2 m-1 text-xl rounded-md text-center"
-        />
-        <input
-          type="number"
-          placeholder="Original Price"
-          value={originalPrice}
-          onChange={(e) => setOriginalPrice(e.target.value)}
-          className="border-2 border-blue-700 p-2 m-1 text-xl rounded-md text-center"
-        />
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          className="border-2 border-blue-700 p-2 m-1 text-xl p-2 rounded-md text-center"
-        />
-        <button
-          onClick={() => setIsNew(!isNew)}
-          className={`border-2 rounded-md  border-blue-700 m-1 p-2 ${isNew ? 'bg-blue-700' : 'bg-white'} hover:bg-blue-500`}
-        >
-          {isNew ? 'New' : 'Not New'}
-        </button>
-        <button onClick={addInstrument} className="border-2 border-blue-700 m-1 p-2 rounded-md text-center hover:bg-blue-500">{editId === -1 ? 'Add Instrument' : 'Update Instrument'}</button>
-      </div>
+        <div className="add-instrument">
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="border-2 border-blue-700 p-2 m-1 text-xl rounded-md text-center"
+          />
+          <input
+            type="number"
+            placeholder="Price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="border-2 border-blue-700 p-2 m-1 text-xl rounded-md text-center"
+          />
+          <input
+            type="number"
+            placeholder="Original Price"
+            value={originalPrice}
+            onChange={(e) => setOriginalPrice(e.target.value)}
+            className="border-2 border-blue-700 p-2 m-1 text-xl rounded-md text-center"
+          />
+          <input
+            type="text"
+            placeholder="Image URL"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            className="border-2 border-blue-700 p-2 m-1 text-xl rounded-md text-center"
+          />
+          <button
+            onClick={() => setIsNew(!isNew)}
+            className={`border-2 rounded-md  border-blue-700 m-1 p-2 ${isNew ? 'bg-blue-700' : 'bg-white'} hover:bg-blue-500`}
+          >
+            {isNew ? 'New' : 'Not New'}
+          </button>
+          <button onClick={addInstrument} className="border-2 border-blue-700 m-1 p-2 rounded-md text-center hover:bg-blue-500">{editId === -1 ? 'Add Instrument' : 'Update Instrument'}</button>
+        </div>
       </div>
       
     </main>

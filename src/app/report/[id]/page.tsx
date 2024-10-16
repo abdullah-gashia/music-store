@@ -1,11 +1,19 @@
-import React from 'react'
+import CC from "@/components/cc";
 
-type Props = {
-    params: any;
-};
-
-export default function Report({ params }: Props) {
-  return (
-    <div>Report Id: {params.id}</div>
-  )
+export default function Params(
+    { params, searchParams }:
+        {
+            params: { slug: string },
+            searchParams: { [key: string]: string | string[] | undefined }
+        }) {
+    return (<>
+        Params: {params.slug}
+        <hr />
+        CC: <CC />
+        <hr />
+        QueryString: <br />
+        SearchParams: {JSON.stringify(searchParams)}
+        <br />
+        Guitar: {searchParams.guitar}
+    </>)
 }
