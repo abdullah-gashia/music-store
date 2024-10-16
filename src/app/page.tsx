@@ -1,7 +1,7 @@
-import Link from "next/link";
 import Head from "@/components/head";
 import Main from "@/components/main";
 import Footer from "@/components/footer";
+import Add from "@/components/addTest";
 
 export default function Home() {
   return (
@@ -20,8 +20,10 @@ export default function Home() {
       <br />
       <br />
       <br />
+      
       {<Footer/>}
       
     
     </div>)
 }
+

@@ -23,6 +23,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(500px,2000px));
   gap: 20px;
+  
 }
 
 .game-card {
@@ -100,4 +101,15 @@
   background-color: #1da4f3;
   padding: 40px;
   border-radius: 20px 0px 0px 0px;
+}
+
+.new{
+  color:gold;
+  background-color: red;
+  width: 50px;
+  text-align: center;
+}
+
+.add{
+  padding: 50px;
 }
