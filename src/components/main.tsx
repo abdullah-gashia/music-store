@@ -1,6 +1,3 @@
-// define JSON object (instruments[]) consists of
-// id, name, price, original_price, image_url, is_new, likes
-
 'use client'
 import React, { useState } from 'react';
 import './Main.css';
@@ -100,6 +97,7 @@ export default function Main() {
   const [originalPrice, setOriginalPrice] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [isNew, setIsNew] = useState(false);
+  const [editId, setEditId] = useState(-1);
 
   const handleLike = (index: number) => {
     const newLikes = [...gameLikes];
@@ -108,20 +106,51 @@ export default function Main() {
   };
 
   function addInstrument() {
-    const newInstrument = {
-      id: gameLikes[gameLikes.length - 1]?.id + 1 || 1,
-      name: name,
-      price: price,
-      original_price: originalPrice || undefined,
-      image_url: imageUrl,
-      is_new: isNew,
-      likes: 0,
-    };
-    setGameLikes([...gameLikes, newInstrument]);
+    if (editId !== -1) {
+      const temp = [...gameLikes];
+      temp[editId] = {
+        ...temp[editId],
+        name,
+        price,
+        original_price: originalPrice || undefined,
+        image_url: imageUrl,
+        is_new: isNew,
+      };
+      setGameLikes(temp);
+      setEditId(-1);
+    } else {
+      const newInstrument = {
+        id: gameLikes[gameLikes.length - 1]?.id + 1 || 1,
+        name: name,
+        price: price,
+        original_price: originalPrice || undefined,
+        image_url: imageUrl,
+        is_new: isNew,
+        likes: 0,
+      };
+      setGameLikes([...gameLikes, newInstrument]);
+    }
+    setName('');
+    setPrice('');
+    setOriginalPrice('');
+    setImageUrl('');
+    setIsNew(false);
+  }
+
+  function editInstrument(id: number) {
+    const index = gameLikes.findIndex((instrument) => instrument.id === id);
+    if (index !== -1) {
+      setEditId(index);
+      setName(gameLikes[index].name);
+      setPrice(gameLikes[index].price);
+      setOriginalPrice(gameLikes[index].original_price || '');
+      setImageUrl(gameLikes[index].image_url);
+      setIsNew(gameLikes[index].is_new);
+    }
   }
 
   return (
-    <main className="container">
+    <main className="container ">
       <div className="header">
         <h2>Trending Music</h2>
         <button className="view-all hover:bg-indigo-700">View All</button>
@@ -151,6 +180,7 @@ export default function Main() {
                 <button onClick={() => handleLike(index)} className="like-button">Like</button>
                 <span>{instrument.likes} Likes</span>
               </div>
+              <button onClick={() => editInstrument(instrument.id)} className="edit-button border-2 m-2 p-1">Edit</button>
             </div>
           </div>
         ))}
@@ -194,7 +224,7 @@ export default function Main() {
         >
           {isNew ? 'New' : 'Not New'}
         </button>
-        <button onClick={addInstrument} className="border-2 border-blue-700 m-1 p-2 rounded-md text-center hover:bg-blue-500">Add Instrument</button>
+        <button onClick={addInstrument} className="border-2 border-blue-700 m-1 p-2 rounded-md text-center hover:bg-blue-500">{editId === -1 ? 'Add Instrument' : 'Update Instrument'}</button>
       </div>
       </div>
       
