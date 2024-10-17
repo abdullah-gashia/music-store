@@ -73,7 +73,7 @@ const ProductPage = () => {
           >
             Back to Products
           </button>
-          <button onClick={() => editInstrument(displayProduct.id)} className="edit-button border-2 m-2 p-1">Edit</button>
+          <button onClick={() => editInstrument(displayProduct.id)} className="edit-button border-2 m-2 p-1 text-white hover:bg-red-700">Edit</button>
         </div>
       </div>
     </>
