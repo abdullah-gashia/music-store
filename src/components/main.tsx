@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import './Main.css';
 import { useRouter } from 'next/navigation';
+import { link } from 'fs';
+import Link from 'next/link';
 
 const instruments = [
   {
@@ -101,7 +103,7 @@ export default function Main() {
   const [isNew, setIsNew] = useState(false);
   const [editId, setEditId] = useState(-1);
 
-  const handleLike = (index) => {
+  const handleLike = (index: number) => {
     const newLikes = [...gameLikes];
     newLikes[index].likes += 1;
     setGameLikes(newLikes);
@@ -139,7 +141,7 @@ export default function Main() {
     setIsNew(false);
   }
 
-  function editInstrument(id) {
+  function editInstrument(id: number) {
     const index = gameLikes.findIndex((instrument) => instrument.id === id);
     if (index !== -1) {
       setEditId(index);
@@ -151,15 +153,14 @@ export default function Main() {
     }
   }
 
-  function deleteInstrument(id) {
+  function deleteInstrument(id: number) {
     setGameLikes(gameLikes.filter((instrument) => instrument.id !== id));
   }
 
-  function goToOrderPage(name) {
+  function goToOrderPage(name: string) {
     router.push(`/report/${name}`);
+    
   }
-
-  // hello
 
   return (
     <main className="container ">
@@ -173,7 +174,9 @@ export default function Main() {
           <div key={instrument.id} className="game-card">
             {instrument.is_new && <div className="new-tag m-4 new">New</div>}
 
-            <img src={instrument.image_url} alt={instrument.name} className="game-image" onClick={() => goToOrderPage(instrument.name)} />
+            <img src={instrument.image_url} alt={instrument.name} className="game-image " onClick={() => router.push(`/report/${instrument.id}`)} />
+
+            
 
             <div className="game-details flex items-center justify-between m-5">
               <div>
