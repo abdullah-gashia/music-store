@@ -10,7 +10,7 @@ export default function Params(
           <p>QueryString:</p>
           <p>SearchParams: {JSON.stringify(searchParams)}</p>
           <p>Guitar: {Array.isArray(searchParams.guitar) ? searchParams.guitar.join(', ') : searchParams.guitar}</p>
-          {searchParams.guitar && typeof searchParams.guitar === 'string' && (
+          {searchParams.guitar && typeof searchParams.guitar === 'string'&& (
               <div>
                   <img src={searchParams.guitar} alt="Guitar" />
               </div>

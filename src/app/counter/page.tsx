@@ -26,5 +26,5 @@ export default function Counter() {
             onClick={() => (setNum(0))}
         >0
         </button>
-    </>) //JSX
+    </>) 
 }
