@@ -176,8 +176,6 @@ export default function Main() {
 
             <img src={instrument.image_url} alt={instrument.name} className="game-image " onClick={() => router.push(`/report/${instrument.id}`)} />
 
-            
-
             <div className="game-details flex items-center justify-between m-5">
               <div>
                 {instrument.original_price ? (

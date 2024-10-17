@@ -21,6 +21,7 @@ const ProductPage = () => {
   const productId = parseInt(params.id); 
 
   const [isLoading, setIsLoading] = useState(true);
+  const [editedProduct, setEditedProduct] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000); 
@@ -41,19 +42,30 @@ const ProductPage = () => {
     return <div className="text-white">Product not found</div>; 
   }
 
+  const editInstrument = (id) => {
+    const newName = prompt("Enter new name:", product.name);
+    const newPrice = prompt("Enter new price:", product.price);
+    if (newName && newPrice) {
+      setEditedProduct({ ...product, name: newName, price: parseFloat(newPrice) });
+      alert(`Instrument updated: Name - ${newName}, Price - $${newPrice}`);
+    }
+  };
+
+  const displayProduct = editedProduct || product;
+
   return (
     <>
       <Head>
-        <title>{product.name} | Music Store</title>
-        <meta name="description" content={product.description} />
+        <title>{displayProduct.name} | Music Store</title>
+        <meta name="description" content={`${displayProduct.name} - Buy now at the best price`} />
         <meta name="keywords" content="music, instruments, guitars, piano, drums" />
       </Head>
       <div className="min-h-screen bg-gradient-to-b flex items-center justify-center">
         <div className="bg-gray-800 shadow-lg rounded-lg p-8 max-w-lg">
-          <img src={product.image_url} alt={product.name} className="w-full h-48 bg-cover rounded-t-lg shadow-md transform transition duration-500 hover:scale-105" />
-          <h2 className="text-2xl font-bold mt-4 text-white">{product.name}</h2>
-          <p className="text-lg font-semibold text-white">Price: ${product.price}</p>
-          <p className="text-gray-300 mt-2">{product.description}</p>
+          <img src={displayProduct.image_url} alt={displayProduct.name} className="w-full h-48 bg-cover rounded-t-lg shadow-md transform transition duration-500 hover:scale-105" />
+          <h2 className="text-2xl font-bold mt-4 text-white">{displayProduct.name}</h2>
+          <p className="text-lg font-semibold text-white">Price: ${displayProduct.price}</p>
+          <p className="text-gray-300 mt-2">{displayProduct.description}</p>
           <p className='text-white'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo atque blanditiis, cum similique dolor assumenda eum dolores adipisci at vero asperiores explicabo beatae laboriosam modi veniam autem architecto minima eligendi.</p>
           <button 
             className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
@@ -61,6 +73,7 @@ const ProductPage = () => {
           >
             Back to Products
           </button>
+          <button onClick={() => editInstrument(displayProduct.id)} className="edit-button border-2 m-2 p-1">Edit</button>
         </div>
       </div>
     </>
