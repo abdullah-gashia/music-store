@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import './Main.css';
+import { useRouter } from 'next/navigation';
 
 const instruments = [
   {
@@ -91,6 +92,7 @@ const instruments = [
 ];
 
 export default function Main() {
+  const router = useRouter();
   const [gameLikes, setGameLikes] = useState(instruments);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -153,6 +155,10 @@ export default function Main() {
     setGameLikes(gameLikes.filter((instrument) => instrument.id !== id));
   }
 
+  function goToOrderPage(id) {
+    router.push(`/report/${id}`);
+  }
+
   return (
     <main className="container ">
       <div className="header">
@@ -165,7 +171,7 @@ export default function Main() {
           <div key={instrument.id} className="game-card">
             {instrument.is_new && <div className="new-tag m-4 new">New</div>}
 
-            <img src={instrument.image_url} alt={instrument.name} className="game-image" />
+            <img src={instrument.image_url} alt={instrument.name} className="game-image" onClick={() => goToOrderPage(instrument.id)} />
 
             <div className="game-details flex items-center justify-between m-5">
               <div>
