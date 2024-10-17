@@ -155,9 +155,11 @@ export default function Main() {
     setGameLikes(gameLikes.filter((instrument) => instrument.id !== id));
   }
 
-  function goToOrderPage(id) {
-    router.push(`/report/${id}`);
+  function goToOrderPage(name) {
+    router.push(`/report/${name}`);
   }
+
+  // hello
 
   return (
     <main className="container ">
@@ -171,7 +173,7 @@ export default function Main() {
           <div key={instrument.id} className="game-card">
             {instrument.is_new && <div className="new-tag m-4 new">New</div>}
 
-            <img src={instrument.image_url} alt={instrument.name} className="game-image" onClick={() => goToOrderPage(instrument.id)} />
+            <img src={instrument.image_url} alt={instrument.name} className="game-image" onClick={() => goToOrderPage(instrument.name)} />
 
             <div className="game-details flex items-center justify-between m-5">
               <div>
