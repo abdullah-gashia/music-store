@@ -39,10 +39,10 @@ const ProductPage = () => {
   }
 
   if (!product) {
-    return <div className="text-white">Product not found</div>; 
+    return <div className="text-black flex items-center justify-center flex-col h-screen">มันไม่ได้เซฟในโค้ดสะหน่อย</div>; 
   }
 
-  const editInstrument = (id) => {
+  const editInstrument = (id: number) => {
     const newName = prompt("Enter new name:", product.name);
     const newPrice = prompt("Enter new price:", product.price);
     if (newName && newPrice) {

@@ -159,7 +159,6 @@ export default function Main() {
 
   function goToOrderPage(name: string) {
     router.push(`/report/${name}`);
-    
   }
 
   return (
