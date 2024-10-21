@@ -1,0 +1,9 @@
+.header-background {
+    background-image: url("../image/bg.jpg");
+    background-size: cover;
+    background-position: center;
+    border-bottom-left-radius: 3rem; /* Adjust as needed */
+    border-bottom-right-radius: 3rem; /* Adjust as needed */
+    overflow: hidden;
+  }
+  
