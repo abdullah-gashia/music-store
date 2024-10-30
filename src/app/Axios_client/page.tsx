@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import "tailwindcss/tailwind.css";
@@ -23,71 +22,67 @@ export default function Page() {
     const [url, setUrl] = useState('')
     const [obj, setObj] = useState<PostType[] | null>(null)
     const [photos, setPhotos] = useState<PhotoType[]>([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        async function getImage() {
+        async function fetchData() {
             try {
-                const { data } = await axios.get("https://api.github.com/users/nikisidama")
-                setUrl(data.avatar_url)
+                const userRes = await axios.get("https://api.github.com/users/nikisidama")
+                setUrl(userRes.data.avatar_url)
+                
+                const postRes = await axios.get("/api/vercel")
+                setObj(postRes.data)
+                
+                const photoRes = await axios.get('https://jsonplaceholder.typicode.com/photos?_limit=20')
+                setPhotos(photoRes.data.map((photo: { id: number, title: string }) => ({
+                    id: photo.id,
+                    title: photo.title
+                })))
             } catch (e) {
-                console.error(e)
+                console.error("Error fetching data:", e)
+            } finally {
+                setLoading(false)
             }
         }
-        
-        async function getJSON() {
-            try {
-                const { data } = await axios.get("/api/vercel")
-                setObj(data)
-            } catch (e) {
-                console.error(e)
-            }
-        }
-
-        async function getPhotoTitles() {
-            try {
-                const { data } = await axios.get('https://jsonplaceholder.typicode.com/photos')
-                setPhotos(data.map((photo: { id: number, title: string }) => ({ id: photo.id, title: photo.title })))
-            } catch (e) {
-                console.error(e)
-            }
-        }
-
-        getImage()
-        getJSON()
-        getPhotoTitles()
+        fetchData()
     }, [])
 
-    if (!url || !obj) return <div className="flex items-center justify-center h-screen">
-        <p className="text-2xl font-semibold text-gray-600">...loading!!</p>
-    </div>
-
-    return <div className="container mx-auto p-8">
-        <div className="flex items-center justify-center mb-8">
-            <Image
-                src={url}
-                alt='User Avatar'
-                width={150}
-                height={150}
-                className="rounded-full shadow-lg border-4 border-blue-400"
-            />
+    if (loading) return (
+        <div className="flex items-center justify-center h-screen bg-black text-white">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-white"></div>
         </div>
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {photos.map((photo) => {
-                const item = obj.find((o) => o.id === photo.id);
-                if (!item) return null;
-                return (
-                    <div key={photo.id} className='bg-white p-6 shadow-md rounded-lg transition-transform transform hover:scale-105'>
-                        <h2 className="text-xl font-bold text-blue-500 mb-2">{photo.title}</h2>
-                        <p className="text-gray-800"><strong>ID:</strong> {item.id}</p>
-                        <p className="text-gray-600 mt-2"><strong>Content:</strong> {item.content}</p>
-                        <p className="text-gray-800 mt-2"><strong>Author:</strong> {item.author}</p>
-                        <p className="text-gray-600 mt-2"><strong>Date:</strong> {item.date}</p>
-                        <p className="text-gray-800 mt-2"><strong>Category:</strong> {item.category}</p>
-                    </div>
-                )
-            })}
-        </section>
-    </div>
-} 
+    )
 
-//cream gay
+    return (
+        <div className="bg-black min-h-screen py-12 text-white">
+            <div className="container mx-auto px-4">
+                <header className="text-center mb-16">
+                    <h1 className="text-5xl font-extrabold mb-4">Personal Information</h1>
+                    <p className="text-lg text-gray-400">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, ullam molestias..</p>
+                </header>
+                
+                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {photos.map((photo) => {
+                        const item = obj?.find((o) => o.id === photo.id)
+                        if (!item) return null
+                        return (
+                            <div 
+                                key={photo.id} 
+                                className="relative bg-white text-black p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 group"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 group-hover:opacity-40 transition-opacity duration-300"></div>
+                                <h2 className="text-2xl font-bold mb-2">{photo.title}</h2>
+                                <p className="text-gray-500"><strong>ID:</strong> {item.id}</p>
+                                <p className="text-gray-700 mt-2"><strong>Description:</strong> {item.content}</p>
+                                <p className="text-gray-500 mt-2"><strong>Author:</strong> {item.author}</p>
+                                <p className="text-gray-500 mt-2"><strong>Date:</strong> {item.date}</p>
+                                <p className="text-gray-500 mt-2"><strong>Category:</strong> {item.category}</p>
+                                <div className="absolute bottom-4 right-4 text-sm font-semibold text-gray-500">Learn More</div>
+                            </div>
+                        )
+                    })}
+                </section>
+            </div>
+        </div>
+    )
+}
