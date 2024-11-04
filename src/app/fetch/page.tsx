@@ -23,3 +23,5 @@ export default async function MyFetch() {
             alt="My Pic" />
     </>)
 }
+
+//dis gay
