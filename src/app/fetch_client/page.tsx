@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import axios from "axios"
 import "tailwindcss/tailwind.css";
 
 type PostType = {
@@ -27,14 +26,18 @@ export default function Page() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const userRes = await axios.get("https://api.github.com/users/nikisidama")
-                setUrl(userRes.data.avatar_url)
+                const userRes = await fetch("https://api.github.com/users/nikisidama")
+                const userData = await userRes.json()
+                setUrl(userData.avatar_url)
                 
-                const postRes = await axios.get("/api/vercel")
-                setObj(postRes.data)
                 
-                const photoRes = await axios.get('https://jsonplaceholder.typicode.com/photos?_limit=20')
-                setPhotos(photoRes.data.map((photo: { id: number, title: string }) => ({
+                const postRes = await fetch("/api/vercel")
+                const postData = await postRes.json()
+                setObj(postData)
+                
+                const photoRes = await fetch('https://jsonplaceholder.typicode.com/photos?_limit=20')
+                const photoData = await photoRes.json()
+                setPhotos(photoData.map((photo: { id: number, title: string }) => ({
                     id: photo.id,
                     title: photo.title
                 })))
@@ -56,7 +59,11 @@ export default function Page() {
     return (
         <div className="bg-black min-h-screen py-12 text-white">
             <div className="container mx-auto px-4">
+
                 <header className="text-center mb-16">
+
+                    <img src={url} alt="Avatar" className="mx-auto rounded-full w-32 h-32 mb-4" />
+                    
                     <h1 className="text-5xl font-extrabold mb-4">Personal Information</h1>
                     <p className="text-lg text-gray-400">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, ullam molestias..</p>
                 </header>
@@ -77,6 +84,7 @@ export default function Page() {
                                 <p className="text-gray-500 mt-2"><strong>Author:</strong> {item.author}</p>
                                 <p className="text-gray-500 mt-2"><strong>Date:</strong> {item.date}</p>
                                 <p className="text-gray-500 mt-2"><strong>Category:</strong> {item.category}</p>
+                                <img src={url} alt="Avatar" className="mx-auto rounded-full w-32 h-32 mb-4" />
                                 <div className="absolute bottom-4 right-4 text-sm font-semibold text-gray-500">Learn More</div>
                             </div>
                         )
